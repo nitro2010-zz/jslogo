@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Logo Przewodnik językowy</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script src="polyfill/polyfill.min.js"></script>
+
+<style type="text/css">
+h1, h2, h3, h4, p { margin-bottom: 6pt; margin-top: 6pt; }
+body, p, h1, h2, h3 { font-family: sans-serif; }
+dl { margin-top: 6pt; }
+p, dt, dd, ol, li { font-size: 10pt; }
+code { font-family: monospace; font-weight: bold; }
+body
+{
+  color: black;
+  background-color: transparent;
+}
+dd.example:before {
+  content: 'Przykład:';
+  margin-right: 0.5em;
+  font-family: sans-serif;
+  font-style: italic;
+  color: gray;
+}
+dd.example {
+  font-family: monospace;
+  white-space: pre-wrap;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  color: gray;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div>
+
+<p>Numery sekcji odnoszą się do <a target="_blank" href="http://www.cs.berkeley.edu/~bh/v2ch14/manual.html">Podręcznika opisu języka LOGO Berkeley'a</a>  w: <cite>"Informatyka Styl Logo - wolumen 2: Zaawansowane Techniki" Brian Harvey</cite> w celu łatwiejszego porównania.</p>
+
+<ol>
+  <li><a href="#types">Typy danych</a>
+  <li><a href="#sec2">Wbudowane Struktury Danych</a>
+  <li><a href="#sec3">Komunikacja</a>
+  <li><a href="#sec4">Arytmetyka</a>
+  <li><a href="#sec5">Operacje Logiczne</a>
+  <li><a href="#sec6">Grafika</a>
+  <li><a href="#sec7">Zarządzanie obszarem roboczym</a>
+  <li><a href="#sec8">Struktury kontrolne</a>
+</ol>
+
+
+<h3 id="types">Typy</h3>
+<dl>
+  <dt><code>"<var>słowo</var></code>
+  <dt><code>'<var>słowo</var></code>
+  <dd>Ciąg znaków (zakończone białymi znakami)
+ <dd class=example>pokaż "hello</dd>
+
+  <dt><code>:<var>zmienna</var></code>
+  <dd>Definicja wejścia / zmienna referencyjna
+ <dd class=example>pokaż :name</dd>
+
+  <dt><code>[ <var>słowo ...</var> ]</code>
+  <dd>Lista słów lub list, oddzielone białymi znakami
+ <dd class=example>pokaż [1 2 3]</dd>
+
+  <dt><code>{ <var>słowo ...</var> }</code>
+  <dt><code>{ <var>słowo ...</var> }@<var>pochodzenie</var></code>
+  <dd>Tablica słów oddzielonych białymi znakami
+ <dd class=example>pokaż {1 2 3}</dd>
+
+  <dt><code> ( <var>wyrażenie</var> )</code>
+  <dd>Nawiasy mogą być stosowane do ekspresji grupy
+ <dd class=example>pokaż ( 1 + 2 ) * 3</dd>
+
+  <dt><code><var>procedura</var> <var>wejście</var> ...</code>
+  <dd>Wywołuje procedurę z domyślną liczbą wejść
+ <dd class=example>pokaż "hello</dd>
+
+  <dt><code> ( <var>procedura</var> <var>wejście</var> ... )</code>
+  <dd>Wywołuje procedurę z arbitralną liczbą wejść
+  <dd class=example>(show "hello :name)</dd>
+</dl>
+
+<h3 id="sec2">2. Wbudowane Struktury Danych</h3>
+<h4>2.1 Konstruktory</h4>
+
+<dl>
+  <dt><code>słowo <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(słowo <var>wyr</var> <var>...</var>)</code>
+  <dd>Łączy dwa lub więcej słów w jedno słowo
+ <dd class=example>pokaż (słowo "a "b "c)</dd>
+
+  <dt><code>lista <var>rzecz1</var> <var>rzecz2</var></code>
+  <dt><code>(lista <var>rzecz1</var> <var>rzecz2</var> ...)</code>
+  <dd>Tworzenie nowej listy z liczbą wejść
+ <dd class=example>pokaż (list 1+2 2+3 3+4)</dd>
+
+  <dt><code>tablica <var>rozmiar</var></code>
+  <dt><code>(tablica <var>rozmiar</var> <var>pochodzenie</var>)</code>
+  <dd>Utwórz nową tablicę.Domyślne pochodzenie jest 1.
+ <dd class=example>pokaż tablica 10</dd>
+
+  <dt><code>listadotablicy <var>lista</var></code>
+  <dt><code>(listadotablicy <var>lista</var> <var>pochodzenie</var>)</code>
+  <dd>Utwórz nową tablicę wypełniony przez członków listy
+ <dd class=example>pokaż listadotablicy [ 1 3 5 7 ]</dd>
+
+  <dt><code>tablicadolisty <var>tablica</var></code>
+  <dd>Stwórz nową listę wypełniony przez członków tablicy
+ <dd class=example>pokaż tablicadolisty { 2 4 6 8 }</dd>
+
+  <dt><code>zdanie rzecz1 rzecz2</code>
+  <dt><code>(zdanie rzecz1 rzecz2 ...)</code>
+  <dt><code>zd rzecz1 rzecz2</code>
+  <dt><code>(zd rzecz1 rzecz2 ...)</code>
+  <dd>Tworzy nową listę z wejścia (jeżeli nie jest listą) lub członkami wejścia (jeżeli jest listą)
+ <dd class=example>pokaż zdanie [1 2 3] [and so on]</dd>
+
+  <dt><code>nap <var>rzecz</var> <var>lista</var></code>
+  <dt><code>nak <var>rzecz</var> <var>lista</var></code>
+  <dd>Dodaje nową pozycję na początku lub na końcu listy
+ <dd class=example>pokaż nap 0 [ 1 2 3 ]</dd>
+ <dd class=example>pokaż nak 4 [ 1 2 3 ]</dd>
+
+  <dt><code>połącz rzecz1 rzecz2</code>
+  <dd>Dołącza słowo do listy
+ <dd class=example>pokaż połącz "a [b c]</dd>
+
+  <dt><code>wspak <var>lista</var></code>
+  <dd>Wyświetla listę z pozycjami w odwrotnej kolejności
+ <dd class=example>pokaż wspak [ 1 2 3 ]</dd>
+
+  <dt><code>generujg</code>
+  <dd>Wyświetla unikatowy łańcuch znaków, np. <samp>G1</samp>, <samp>G2</samp>, itd.
+ <dd class=example>pokaż generujg</dd>
+</dl>
+
+<h4>2.2 Selekcjonery danych</h4>
+<dl>
+  <dt><code>pierwszy <var>lista</var></code>
+  <dt><code>ostatni <var>lista</var></code>
+  <dd>Wyświetla pierwszą lub ostatnią pozycję z listy
+ <dd class=example>pokaż pierwszy [ 1 2 3 ]</dd>
+ <dd class=example>pokaż ostatni [ 1 2 3 ]</dd>
+  <dt><code>bezpierw <var>lista</var></code>
+  <dt><code>bp <var>lista</var></code>
+  <dt><code>bezost <var>lista</var></code>
+  <dt><code>bo <var>lista</var></code>
+  <dd>Wyświetla listę, ale bez pierwszego lub ostatniego elementu
+ <dd class=example>pokaż bezpierw [ 1 2 3 ]</dd>
+ <dd class=example>pokaż bezost [ 1 2 3 ]</dd>
+
+  <dt><code>pierwsze <var>listy</var></code>
+  <dd>Wyświetla listę pierwszych pozycji list
+ <dd class=example>pokaż pierwsze [ [1 2 3] [a b c] ]</dd>
+
+  <dt><code>bezpierwszych <var>listy</var></code>
+  <dt><code>bps <var>listy</var></code>
+  <dd>Wyświetla listę list bez pierwszych elementów
+ <dd class=example>pokaż bezpierwszych [ [ 1 2 3 ] [ a b c ] ]</dd>
+
+  <dt><code>los <var>lista</var></code>
+  <dd>Wyświetla jeden losowy element z listy
+ <dd class=example>pokaż los [ 1 2 3 ]</dd>
+
+  <dt><code>element <var>indeks</var> <var>rzecz</var></code>
+  <dd>Wyświetla element podany przez indeks z listy
+ <dd class=example>pokaż element 2 [ 1 2 3 ]</dd>
+
+  <dt><code>ustawelement <var>indeks</var> <var>array</var> <var>value</var></code>
+  <dd>Ustawia wartość pozycji na liście poprzez podanie indeksu
+  <dd class=example>przypisz "a { 1 2 3 }   ustawelement 2 :a "x   pokaż :a</dd>
+
+  <dt><code>usuń <var>rzecz</var> <var>lista</var></code>
+  <dd>Wyświetla listę po usunięciu danej pozycji
+ <dd class=example>pokaż usuń "b [ a b c ]</dd>
+
+  <dt><code>usuńzdup <var>lista</var></code>
+  <dd>Wyświetla listę bez zduplikowanych wartości
+ <dd class=example>pokaż usuńzdup [ 1 2 3 2 3 4 3 4 5 ]</dd>
+</dl>
+
+<h4>2.3 Mutatory Danych</h4>
+<dl>
+  <dt><code>umieść <var>stos</var> <var>rzecz</var></code>
+  <dt><code>zdejmij <var>stos</var></code>
+  <dd>Umieszcza/zdejmuje element na/z listy.
+  <dd class=example>`przypisz "s [ 2 1 ]  umieść "s 3  pokaż :s  zdejmij pop "s</dd>
+
+  <dt><code>dokolejki <var>stos</var> <var>rzecz</var></code>
+  <dt><code>zkolejki <var>stos</var></code>
+  <dd>Dodaje/usuwa elementy z kolejki.
+  <dd class=example>przypisz "q [ 1 2 ]  dokolejki "q 3  pokaż :q  pokaż zkolejki "q</dd>
+</dl>
+
+<h4>2.4 Predykaty</h4>
+<p>Predykaty zwracają 1 (prawda) lub 0 (fałsz)</p>
+<dl>
+  <dt><code>słowop <var>rzecz</var></code>
+  <dt><code>słowo? <var>rzecz</var></code>
+  <dt><code>listap <var>rzecz</var></code>
+  <dt><code>lista? <var>rzecz</var></code>
+  <dt><code>tablicap <var>rzecz</var></code>
+  <dt><code>tablica? <var>rzecz</var></code>
+  <dt><code>liczbap <var>rzecz</var></code>
+  <dt><code>liczba? <var>rzecz</var></code>
+  <dd>Testuje jeżeli rzecz jest słowem, listą, tablicą lub liczbą.
+  <dt><code>równep <var>wyr</var> <var>wyr</var></code>
+  <dt><code>równe? <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> = <var>wyr</var></code>
+  <dt><code>nierównep <var>wyr</var> <var>wyr</var></code>
+  <dt><code>nierówne? <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> &lt;&gt; <var>wyr</var></code>
+  <dd>Testy porównawcze. Porównuje łańcuchy znaków, liczby, lub listy (równe jeżeli długość i wszystkie elementy są równe).
+  <dt><code>pustep <var>wyr</var></code>
+  <dt><code>puste? <var>wyr</var></code>
+  <dd>Testuje jeżeli rzecz jest pustą listą lub pustym łańcuchem znaków.
+  <dt><code>przedp <var>rzecz1</var> <var>rzecz2</var></code>
+  <dt><code>przed? <var>rzecz1</var> <var>rzecz2</var></code>
+  <dd>Testuje kolejność sortowania łańcucha znaków.
+  <dt><code>zawiera? <var>rzecz</var> <var>lista</var></code>
+  <dt><code>element? <var>rzecz</var> <var>lista</var></code>
+  <dd>Testuje czy rzecz jest równa do jakiekolwiek elementu na liście.
+  <dt><code>podtekstp <var>rzecz1</var> <var>rzecz2</var></code>
+  <dt><code>podtekst? <var>rzecz1</var> <var>rzecz2</var></code>
+  <dd>Testuje czy rzecz1 jest podłańcuchem znaków rzecz2.
+</dl>
+
+<h4>2.5 Zapytania</h4>
+<dl>
+  <dt><code>długość <var>rzecz</var></code>
+  <dd>Wyświetla długość listy lub liczbę znaków w łańcuchu znaków
+ <dd class=example>pokaż długość [ 1 2 3 ]</dd>
+ <dd class=example>pokaż długość "hello</dd>
+
+  <dt><code>ascii <var>wyr</var></code>
+  <dd>Wyświetla kod ASCII (w wersji Unicode) dla pierwszego znaku łańcucha znaków
+ <dd class=example>pokaż ascii "abc</dd>
+
+  <dt><code>znak <var>wyr</var></code>
+  <dd>Wyświetla znaków Unicode na podstawie podanego kodu
+ <dd class=example>pokaż znak 97</dd>
+
+  <dt><code>zmałejlitery <var>wyr</var></code>
+  <dt><code>zdużejlitery <var>wyr</var></code>
+  <dd>Wyświetla łańcuch znaków przekonwertowany na małe lub duże litery
+ <dd class=example>pokaż zdużejlitery "abc</dd>
+ <dd class=example>pokaż zmałejlitery "ABC</dd>
+</dl>
+
+
+<h3 id="sec3">3. Komunikacja</h3>
+<h4>3.1 Przetworniki</h4>
+<dl>
+  <dt><code>pisz <var>rzecz</var></code>
+  <dt><code>ps <var>rzecz</var></code>
+  <dt>(<code>pisz <var>rzecz1</var> <var>rzecz2</var> ...)</code>
+  <dt>(<code>ps <var>rzecz1</var> <var>rzecz2</var> ...)</code>
+  <dd>Wyświetla tekst na ekranie, oddzielony spacjami i nową linią.
+  Nawiasy kwadratowe są umieszczane tylko przy listach.
+  <dd class=example>pisz "hello</dd>
+
+  <dt><code>wpisz <var>rzecz</var></code>
+  <dt>(<code>wpisz <var>rzecz1</var> <var>rzecz2</var> ...)</code>
+  <dd>Podobny do <code>pisz</code> ale bez nowej linii.
+  <dd class=example>wpisz "hel  wpisz "lo</dd>
+
+  <dt><code>pokaż <var>rzecz</var></code>
+  <dt>(<code>pokaż <var>rzecz1</var> <var>rzecz2</var> ...)</code>
+  <dd>Podobny do <code>pisz</code> ale nie umieszcza nawiasów kwadratowych.
+ <dd class=example>pokaż "hello</dd>
+</dl>
+
+
+<h4>3.2 Odbieranie</h4>
+<dl>
+  <dt><code>czytajsłowo</code>
+  <dt><code>(czytajsłowo <var>łańcuch potw.</var>)</code>
+  <dd>Czyta tekst od użytkownika.
+ <dd class=example>pokaż czytajsłowo</dd>
+  <dd class=example>przypisz "name (czytajsłowo [What is your name?])  pokaż :name</dd>
+</dl>
+
+<!--
+<h4>3.3 Dostęp do plików</h4>
+<dl>
+</dl>
+-->
+
+<h4>3.4 Dostęp do terminala</h4>
+<dl>
+  <dt><code>zmażtekst</code>
+  <dt><code>zt</code>
+  <dd>Czyści ekran.
+</dl>
+
+<h3 id="sec4">4. Arytmetyka</h3>
+<h4>4.1 Operacje numeryczne</h4>
+<p>Wejściem są liczby lub wyrażenia numeryczne, wyjściem jest liczba.</p>
+
+<dl>
+  <dt><code>suma <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(suma <var>wyr</var> <var>...</var>)</code>
+  <dt><code><var>wyr</var> + <var>wyr</var></code>
+  <dt><code>różnica <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> - <var>wyr</var></code>
+  <dt><code>iloczyn <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(iloczyn <var>wyr</var> <var>...</var>)</code>
+  <dt><code><var>wyr</var> * <var>wyr</var></code>
+  <dt><code>iloraz <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(iloraz <var>wyr</var>)</code>
+  <dt><code><var>wyr</var> / <var>wyr</var></code>
+  <dt><code>potęga <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> ^ <var>wyr</var></code>
+  <dd>Dodaje, odejmuje, mnoży i dzieli liczby.
+
+  <dt><code>reszta <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> % <var>wyr</var></code>
+  <dt><code>mod <var>wyr</var> <var>wyr</var></code>
+  <dd>Wyświetla resztę z dzielenia. Dla <code>reszta</code> i <code>%</code> wynik ma taki sam znak jak pierwsze wejście; 
+  dla <code>modulo</code> wynik ma taki sam znak jak drugie wejście.
+  
+  <dt><code>ujemny <var>wyr</var></code>
+  <dt><code>- <var>wyr</var></code>
+  <dd>Zmienia znak liczby.
+  
+  <dt><code>abs <var>num</var></code>
+  <dd>Wartość bezwzględna
+  
+  <dt><code>int <var>num</var></code>
+  <dt><code>zaokr <var>num</var></code>
+  <dd>Zwraca liczbę całkwitą lub liczbę do najbliższej liczby całkowitej.
+	
+  <dt><code>pwk <var>wyr</var></code>
+  <dt><code>exp <var>wyr</var></code>
+  <dt><code>log10 <var>wyr</var></code>
+  <dt><code>ln <var>wyr</var></code>
+  <dd>pierwiastkuje, <i>e</i> do potęgi, logarytmuje liczby
+  
+  <dt><code>arctg <var>wyr</var></code>
+  <dt><code>(arctg <var>x</var> <var>y</var>)</code>
+  <dt><code>sin <var>wyr</var></code>
+  <dt><code>cos <var>wyr</var></code>
+  <dt><code>tg <var>wyr</var></code>
+  <dd>Użyteczne funkcje trygonometryczne. Kąt jest podawany w stopniach.
+  
+  <dt><code>radarctan <var>wyr</var></code>
+  <dt><code>(radarctan <var>x</var> <var>y</var>)</code>
+  <dt><code>radsin <var>wyr</var></code>
+  <dt><code>radcos <var>wyr</var></code>
+  <dt><code>radtan <var>wyr</var></code>
+  <dd>Użyteczne funkcje trygonometryczne. Kąt jest podawany w radianach.
+
+  <dt><code>isekw <var>pierwszy</var> <var>ostatni</var></code>
+  <dd>Wyświetla listę z liczbami od <var>pierwszy</var> do <var>ostatni</var>
+ <dd class=example>pokaż isekw 1 10</dd>
+
+  <dt><code>rsekw <var>pierwszy</var> <var>ostatni</var> <var>liczba</var></code>
+  <dd>Wyświetla listę z liczbami od <var>pierwszy</var> do <var>ostatni</var> z uwzględniem kroku <var>liczba</var>
+  
+ <dd class=example>pokaż rsekw 1 9 5</dd>
+</dl>
+
+<h4>4.2 Porównywanie liczb</h4>
+<dl>
+  <dt><code>większep <var>wyr</var> <var>wyr</var></code>
+  <dt><code>większe? <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> &gt; <var>wyr</var></code>
+  <dt><code>większerównep <var>wyr</var> <var>wyr</var></code>
+  <dt><code>większerówne? <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> &gt;= <var>wyr</var></code>
+  <dt><code>mniejszep <var>wyr</var> <var>wyr</var></code>
+  <dt><code>mniejsze? <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> &lt;= <var>wyr</var></code>
+  <dt><code>mniejszerównep <var>wyr</var> <var>wyr</var></code>
+  <dt><code>mniejszerówne? <var>wyr</var> <var>wyr</var></code>
+  <dt><code><var>wyr</var> &lt;= <var>wyr</var></code>
+  <dd>Porównywanie: >, >=, <, <=. Argumentami są liczby lub wyrażenia numeryczne. Wyjściem jest: prawda (1) lub fałsz (0).
+
+</dl>
+
+<h4>4.3 Liczby losowe</h4>
+<dl>
+  <dt><code>losowa <var>wyr</var></code>
+  <dd>Wyjściem jest losowa liczba z przedziału od 0 do <var>wyr</var>-1
+
+  <dt><code>startlos</code>
+  <dt>(<code>startlos <var>wyr</var>)</code>
+  <dd>Odnawia generator liczb losowych.
+
+</dl>
+
+<h4>4.4 Formatowanie wyświetlania</h4>
+<dl>
+  <dt><code>postać <var>wyr</var> <var>szerokość</var> <var>precyzja</var></code>
+  <dd>Zwraca sformatowany łańcuch znaków z wynikiem wyrażenia numerycznego z określoną liczbą miejsc ustaloną przez <var>precyzja</var> i dodanymi spacjami po lewej stronie określonymi przez <var>szerokość</var>.
+ <dd class=example>pokaż postać 1/3 10 3</dd>
+</dl>
+
+<h4>4.5 Operacje bitowe</h4>
+<dl>
+  <dt><code>biti <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(biti <var>wyr</var> ...)</code>
+  <dt><code>bitlub <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(bitlub <var>wyr</var> ...)</code>
+  <dt><code>bitalbo <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(bitalbo <var>wyr</var> ...)</code>
+  <dt><code>bitnie <var>wyr</var></code>
+  <dd>Operacje: i, lub, albo, nie.
+
+  <dt><code>przesuńarytmetyczniewlewo <var>wyr</var> <var>liczba_bitów</var></code>
+  <dd>Przesuwanie arytmetyczne bitów. Jeżeli liczba bitów jest ujemna, przesuwa w prawą stronę, zachowując znak.
+
+  <dt><code>przesuńlogiczniewlewo <var>wyr</var> <var>liczba_bitów</var></code>
+  <dd>Logiczne przesuwanie bitów. Jeżeli liczba bitów jest ujemna, przesuwa w prawą stronę, uzupełniając miejsca o zera.
+
+</dl>
+
+<h3 id="sec5">5. Operacje Logiczne</h3>
+<dl>
+  <dt><code>prawda</code>
+  <dd>Wyświetla 1
+  <dt><code>fałsz</code>
+  <dd>Wyświetla 0
+
+  <dt><code>i <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(i <var>wyr</var> <var>...</var>)</code>
+  <dt><code>lub  <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(lub <var>wyr</var> <var>...</var>)</code>
+  <dt><code>albo <var>wyr</var> <var>wyr</var></code>
+  <dt><code>(albo <var>wyr</var> <var>...</var>)</code>
+  <dt><code>nie <var>wyr</var></code>
+  <dd>Logiczne i, lub, albo, nie. Argumentami są liczby lub wyrażenia numeryczne. Argumentami są liczby lub wyrażenia numeryczne, wyjściem jest 1 (prawda) lub 0 (fałsz).
+</dl>
+
+<h3 id="sec6">6. Grafika</h3>
+
+<p>Wprowadzenie do <a target="_blank" href="http://www.cs.berkeley.edu/~bh/v1ch10/turtle.html">Geometrii Żółwia</a>.</p>
+
+<h4>6.1 Poruszaniem Żółwiem</h4>
+<dl>
+  <dt><code>naprzód <var>wyr</var></code>
+  <dt><code>np <var>wyr</var></code>
+  <dd>Porusza żółwia do przodu o zadaną ilość pikseli określonych przez <var>wyr</var>
+  <dd class=example>naprzód 100</dd>
+
+  <dt><code>wstecz <var>wyr</var></code>
+  <dt><code>ws <var>wyr</var></code>
+  <dd>Porusza żółwia do tyłu o zadaną ilość pikseli określonych przez <var>wyr</var>
+  <dd class=example>ws 100</dd>
+
+  <dt><code>lewo <var>wyr</var></code>
+  <dt><code>lw <var>wyr</var></code>
+  <dd>Obraca żółwia o zadaną ilość stopni określonych przez <var>wyr</var> w lewo
+  <dd class=example>lw 90</dd>
+
+  <dt><code>prawo <var>wyr</var></code>
+  <dt><code>pw <var>wyr</var></code>
+  <dd>Obraca żółwia o zadaną ilość stopni określonych przez <var>wyr</var> w prawo
+  <dd class=example>pw 90</dd>
+
+  <dt><code>ustalpoz [ <var>wyr</var> <var>wyr</var> ]</code>
+  <dt><code>ustalpozxy <var>wyr</var> <var>wyr</var></code>
+  <dt><code>ustalx <var>wyr</var></code>
+  <dt><code>ustaly <var>wyr</var></code>
+  <dd>Przenosi żółwia do określonej lokalizacji
+  <dd class=example>ustalpozxy -100 100</dd>
+
+  <dt><code>ustalkierunek <var>wyr</var></code>
+  <dt><code>skieruj <var>wyr</var></code>
+  <dd>Obraca żółwia do określonej pozycji
+  <dd class=example>skieruj 45</dd>
+
+  <dt><code>wróć</code>
+  <dd>Przenosi żółwia do wyjściowej pozycji
+
+  <dt><code>arc <var>kąt</var> <var>promień</var></code>
+  <dd>Bez poruszaniem żółwiem, rysuje łuk skoncentrowany na żółwia, zaczynając od pozycji żółwia.
+  <dd class=example>arc 180 100</dd>
+</dl>
+
+<h4>6.2 Zapytania ruchu żółwia</h4>
+<dl>
+  <dt><code>poz</code>
+  <dt><code>pozx</code>
+  <dt><code>pozy</code>
+  <dd>Wyświetla obecną pozycję żółwia jako [x y].
+ <dd class=example>pokaż poz</dd>
+
+  <dt><code>kierunek</code>
+  <dd>Wyświetla obecny kierunek żółwia
+ <dd class=example>pokaż kierunek</dd>
+
+  <dt><code>azymut [ <var>wyr</var> <var>wyr</var> ]</code>
+  <dd>Wyświetla kierunek określony przez [x y]
+ <dd class=example>pokaż azymut [ 0 0 ]</dd>
+</dl>
+
+<h4>6.3 Żółw i kontrola okna</h4>
+<dl>
+  <dt><code>pokażmnie</code>
+  <dt><code>pż</code>
+  <dd>pokazuje żółwia
+
+  <dt><code>schowajmnie</code>
+  <dt><code>sż</code>
+  <dd>chowa żółwia
+
+  <dt><code>czyść</code>
+  <dd>czyści obszar żółwia
+
+  <dt><code>czyśćekran</code>
+  <dt><code>cs</code>
+  <dd>Czyści ekran i ustawia żółwia na pozycji początkowej
+
+  <dt><code>sklej</code>
+  <dd>Jeżeli żółw wjdzie poza ramę ekranu, będzie kontynuował po drugiej stronie.
+
+  <dt><code>okno</code>
+  <dd>Żółw ma nieograniczone miejsce na ekranie.
+
+  <dt><code>płot</code>
+  <dd>Jeżeli żółw będzie chciał wyjść poza ekran, zatrzyma się na linii.
+
+  <dt><code>zam</code>
+  <dd>Wylewa wiadro farby w miejscu pozycji żółwia.
+  <dd class=example>arc 360 100  zam</dd>
+
+  <dt><code>wypełnij <var>kolor wypełnienia</var> [ <var>wyrażenia ...</var> ]</code>
+  <dd>Wykonuje <var>wyrażenia</var> bez rysowania ale z śledzeniem ruchów żółwia. Kiedy jest zakończony, wypełnia miejsce przez <var>kolor wypełnienia</var>. 
+  <dd class=example>wypełnij "red [ powtórz 5 [ np 100  pw 144 ] ]</dd>
+
+  <dt><code>wpisztekst <var>wyr</var></code>
+  <dd>Rysuje słowo na obszarze żółwia w miejscu pozycji żółwia.
+  <dd class=example>powtórz 8 [ wpisztekst "Logo  pw 45 ]</dd>
+
+  <dt><code>ustalwysokośćtekstu <var>wyr</var></code>
+  <dd>Ustawia wysokość tekstu w pikselach wstawianego przez <code>wpisztekst</code>
+  <dd class=example>ustalwysokośćtekstu 100  wpisztekst "Logo</dd>
+</dl>
+
+<h4>6.4 Żółw i zapytania okna</h4>
+<dl>
+  <dt><code>widocznyp</code>
+  <dt><code>widoczny?</code>
+  <dd>Wyświetla 1 jeżeli żółw jest widoczny, 0 jeżeli żółw jest ukryty
+
+  <dt><code>trybżółwia</code>
+  <dd>wyświetla <code>WRAP</code>, <code>WINDOW</code> or <code>FENCE</code>
+
+  <dt><code>rozmiartekstu</code>
+  <dd>Wyświetla szerokość tekstu narysowanego przez <code>wpisztekst</code>
+
+</dl>
+
+<h4>6.5 Pisak i kontrola tła</h4>
+<dl>
+  <dt><code>opuść</code>
+  <dt><code>opu</code>
+  <dd>Opuszcza pisak
+
+  <dt><code>podnieś</code>
+  <dt><code>pod</code>
+  <dd>Podnosi pisak
+
+  <dt><code>pisanie</code>
+  <dt><code>ścieranie</code>
+  <dt><code>odwracanie</code>
+  <dd>Zmienia tryb rysowania żółwia - pisanie (domyślnie) zostawia kolorowy śląd, ścieranie przywraca tło, odwracanie odwraca tło.
+
+  <dt><code>ustalkolpis <var>kolor logo</var></code>
+  <dt><code>ustalkolpis <var>kolor css</var></code>
+  <dt><code>ustalkolpis [<var>r</var> <var>g</var> <var>b</var>]</code>
+  <dd>Ustawia kolor tekstu/pisaka. Kolor może być podany w postaci nr liczby zdefiniowanego w LOGO (0-15), koloru CSS (<a target="_blank" href="http://www.w3.org/TR/CSS21/syndata.html#value-def-color">nazwy koloru CSS lub #rrggbb</a>).
+  <dd>Standardowe kolory LOGO to:
+  <style>
+    #colortable td { width: 25%; padding-left: 4px; padding-right: 4px;}
+  </style>
+  <table id="colortable">
+    <tr>
+      <td style="background-color: black; color: white;">0: czarny (black)
+      <td style="background-color: blue;">1: niebieski (blue)
+      <td style="background-color: lime;">2: zielony (green)
+      <td style="background-color: cyan;">3: cyjan (cyan)
+    <tr>
+      <td style="background-color: red;">4: czerwony (red)
+      <td style="background-color: magenta;">5: magenta
+      <td style="background-color: yellow;">6: żółty (yellow)
+      <td style="background-color: white;">7: biały (white)
+    <tr>
+      <td style="background-color: brown;">8: brązowy (brown)
+      <td style="background-color: tan;">9: tan
+      <td style="background-color: green;">10: zielony (green)
+      <td style="background-color: aquamarine;">11: aqua
+    <tr>
+      <td style="background-color: salmon;">12: łososiowy (salmon)
+      <td style="background-color: purple;">13: fioletowy (purple)
+      <td style="background-color: orange;">14: pomarańczowy (orange)
+      <td style="background-color: gray;">15: szary (gray)
+  </table>
+  <dd class=example>ustalkolpis 4</dd>
+  <dd class=example>ustalkolpis "czerwony</dd>
+  <dd class=example>ustalkolpis "#ff0000</dd>
+  <dd class=example>ustalkolpis [ 99 0 0 ]</dd>
+
+  <dt><code>ustalrozmiarpisaka <var>wyr</var></code>
+  <dd>Ustawia szerokość pisaka w pikselach. Jeżeli <var>wyr</var> jest listą, używany jest pierwszy człon listy.
+</dl>
+
+<h4>6.6 Zapytania pisaka</h4>
+<dl>
+  <dt><code>opuszczonyp</code>
+  <dt><code>opuszczony?</code>
+  <dd>Wyświetla 1 jeżeli pisak jest opuszczony, 0 w przeciwnym razie
+
+  <dt><code>trybpis</code>
+  <dd>Wyświetla <code>PAINT</code>, <code>ERASE</code> or <code>REVERSE</code>
+
+  <dt><code>kolpis</code>
+  <dd>Wyświetla obecny kolor pisaka w formacie koloru CSS.
+
+  <dt><code>rozmiarpis</code>
+  <dd>Wyświetla szerokość i wysokość pisaka (zazywczaj są takie same).
+</dl>
+
+<!--
+<h4>6.7 Zapisywanie i ładowanie obrazków</h4>
+<dl>
+</dl>
+
+<h4>6.8 Zapytania myszy</h4>
+<dl>
+</dl>
+-->
+
+<h3 id="sec7">7. Zarządzanie obszarem roboczym</h3>
+<h4>7.1 Definiowanie procedury</h4>
+<dl>
+  <dt><code>oto <var>nazwa_procedury</var> <var>wejścia ...</var> <var>wyrażenia ...</var> już</code>
+  <dd>Definiuje nową procedurę przez nazwę i dodatkowe polecenia
+  <dd class=example>oto star :n powtórz 5 [ np :n pw 144 ] już</dd>
+
+  <dt><code>proc <var>nazwa_procedury</var></code>
+  <dd>Wyświetla definicję procedury jako łańcuch znaków
+ <dd class=example>pokaż proc "star</dd>
+
+  <dt><code>kopiujdef <var>nowa_nazwa</var> <var>stara_nazwa</var></code>
+  <dd>Kopiuje procedurę. Jeżeli procedura <var>nowa_nazwa</var> już istnieje, zostanie nadpisana. Nie można nadpisać procedur wbudowanych.
+  <dd class=example>kopiujdef "new "old</dd>
+</dl>
+
+<h4>7.2 Definiowanie zmiennych</h4>
+<dl>
+  <dt><code>przypisz <var>nazwa_zmiennej</var> <var>wyr</var></code>
+  <dd>Aktualizuje zmienną lub definiuje nową globalną zmienną. Musi być podana nazwa zmiennej.
+  <dd class=example>przypisz "myvar 5</dd>
+
+  <dt><code>nazwij <var>wyr</var> <var>nazwa_zmiennej</var></code>
+  <dd>Podobny do <code>przypisz</code>, ale z odwróconymi wejściami
+  <dd class=example>nazwij 5 "myvar</dd>
+
+  <dt><code>lokalna <var>nazwa_zmiennej</var></code>
+  <dt><code>(lokalna <var>nazwa_zmiennej</var> ...)</code>
+  <dd>Kolejne <code>przypisz</code>, które tworzy zmienne w zasięgu lokalnym zamiast globalnym.
+  <dd class=example>lokalna "myvar</dd>
+
+  <dt><code>twórzlokalną <var>nazwa_zmiennej</var> <var>wyr</var></code>
+  <dd>Definiowanie zmiennej w zasięgu lokalnym
+  <dd class=example>twórzlokalną "myvar 5</dd>
+
+  <dt><code>niech <var>nazwa_zmiennej</var></code>
+  <dd>Wyświetla wartość zmiennej. <code>:foo</code> jest skrótem dla <code>niech "foo</code>
+ <dd class=example>pokaż niech "myvar</dd>
+
+  <dt><code>globalna <var>nazwa_zmiennej</var></code>
+  <dd>Rezerwuje zmienną w zasięgu globalnym. To nie robi nic użytecznego.
+  <dd class=example>globalna "myvar</dd>
+</dl>
+
+<h4>7.3 Listy właściwości</h4>
+<dl>
+  <dt><code>przywłaść <var>nazwa_listy</var> <var>nazwa_właść</var> <var>wartość</var></code>
+  <dd>Ustawia właściwość <var>nazwa_właść</var> na liście <var>nazwa_listy</var> z wartością <var>wartość</value>.
+
+  <dt><code>lwł <var>nazwa_listy</var> <var>nazwa_właść</var></code>
+  <dd>Pobiera wartość właściwości <var>nazwa_właść</var> z listy <var>nazwa_listy</var>.
+
+  <dt><code>uswłaś <var>nazwa_listy</var> <var>nazwa_właść</var></code>
+  <dd>Usuwa właściwość <var>nazwa_właść</var> z listy <var>nazwa_listy</var>.
+
+  <dt><code>właściwość <var>nazwa_listy</var></code>
+  <dd>Zwraca listę właściwości z listy <var>nazwa_listy</var>.
+</dl>
+
+<h4>7.4 Predykaty obszaru roboczego</h4>
+<p>Predykat zwraca 1 (prawda) lub 0 (fałsz).</p>
+<dl>
+  <dt><code>procedurap <var>nazwa</var></code>
+  <dt><code>procedura? <var>nazwa</var></code>
+  <dd>Testuje czy istnieje procedura z podaną nazwą.
+
+  <dt><code>pierwotnep <var>nazwa</var></code>
+  <dt><code>pierwotne? <var>nazwa</var></code>
+  <dd>Testuje czy istnieje wbudowana procedura z podaną nazwą.
+
+  <dt><code>określonep <var>nazwa</var></code>
+  <dt><code>określone? <var>nazwa</var></code>
+  <dd>Testuje czy istnieje zdefiniowana przez użytkownika procedura z podaną nazwą.
+
+  <dt><code>zmiennap <var>nazwa</var></code>
+  <dt><code>zmienna? <var>nazwa</var></code>
+  <dd>Testuje czy istnieje zmienna z podaną nazwą.
+
+  <dt><code>włp <var>nazwa</var></code>
+  <dt><code>wł? <var>nazwa</var></code>
+  <dd>Testuje czy istnieje lista właściwości z podaną nazwą.
+</dl>
+
+
+<h4>7.5 Zapytania obszaru roboczego</h4>
+<dl>
+  <dt><code>zawartości</code>
+  <dd>Wyświetla listy z: nazwami procedur zdefiniowanymi przez użytkownika, zdefiniowanymi zmiennymi i nazwy nie pustych list właściwości. Tylko nie pochowane procedury, zmienne i listy są wyświetlane.
+
+  <dt><code>pochowane</code>
+  <dd>Wyświetla listy z: nazwami procedur zdefiniowanymi przez użytkownika, zdefiniowanymi zmiennymi i nazwy nie pustych list właściwości. Tylko ochowane procedury, zmienne i listy są wyświetlane.
+
+  <dt><code>procedury</code>
+  <dd>Wyświetla listę nazw procedur zdefiniowanych przez użytkownika.
+
+  <dt><code>pierwotne</code>
+  <dd>Wyświetla listę nazw wbudowanych procedur.
+
+  <dt><code>globalne</code>
+  <dd>Wyświetla listę zdefiniowanych zmiennych globalnych.
+
+  <dt><code>nazwy</code>
+  <dd>Wyświetla listy: pierwsza jest pusta, druga jest listą ze zdefiniowanymi zmiennymi.
+
+  <dt><code>właściwości</code>
+  <dd>Wyświetla listy: pierwsza jest pusta, druga jest pusta, trzecia zawiera nazwy list właściwości.
+
+  <dt><code>listanazw <var>nazwa</var></code>
+  <dt><code>listanazw <var>nazwa_listy</var></code>
+  <dd>Zwraca listę podobną do <code>zawartości</code> z nazwami zmiennych.
+
+  <dt><code>listawł <var>nazwa_listy</var></code>
+  <dt><code>listawł <var>nazwa_listy</var></code>
+  <dd>Zwraca listę podobną do <code>zawartości</code> z listami właściwości.
+</dl>
+
+<!--
+<h4>7.6 Inspekcja obszaru roboczego</h4>
+<dl>
+</dl>
+
+-->
+
+<h4>7.7 Kontrola obszaru roboczego</h4>
+<dl>
+  <dt><code>wymaż <var>lista_zawartości</var></code>
+  <dd>Bierze 3 listy: 1. lista nazw procedur zdefiniowanych przez użytkownika do wymazania, 2. zdefiniowanych zmiennych do wymazania, 3. lista list właściwości do wymazania. Procedury wbudowane nie mogą być wymazane.
+  <dd class=example>wymaż [ [myproc] [myvar] [] ]</dd>
+
+  <dt><code>usuńwszystko</code>
+  <dd>Usuwa wszystkie nie-pochowane procedury, zmienne i listy właściwości.
+
+  <dt><code>wżproc</code>
+  <dd>Usuwa wszystkie nie-pochowane procedury użytkownika.
+
+  <dt><code>wżnazwy</code>
+  <dd>Wymazuje wszystkie nie-pochowane zmienne.
+
+  <dt><code>wżwł</code>
+  <dd>Wymazuje wszystkie nie-pochowane listy właściwości.
+
+  <dt><code>wżlistanazw <var>nazwa_zmiennej</var></code>
+  <dt><code>wżlistanazw <var>lista_nazw_zmiennych</var></code>
+  <dd>Wymazuje nazwane zmienne.
+
+  <dt><code>wżlistawł <var>nazwa_listy</var></code>
+  <dt><code>wżlistawł <var>nazwa_listy</var></code>
+  <dd>Wymazuje nazwy list właściwości.
+
+  <dt><code>pochowaj <var>lista_zawartości</var></code>
+  <dd>Pobiera 3 list: 1. lista procedur użytkownika do pochowania, 2. lista zdefiniowanych zmiennych do pochowania, 3. lista list właściwości do pochowania.
+
+  <dt><code>pochowajwszystko</code>
+  <dd>Pochowaj wszystkie procedury użytkownika, zmienne i listy właściwości.
+
+  <dt><code>odgrzeb <var>lista_zawartości</var></code>
+  <dd>Pobiera 3 listy: 1. lista procedur do odgrzebania, 2. lista zmiennych do odgrzebania, 3. lista list właściwości do odgrzebania.
+
+  <dt><code>odgrzebwszystko</code>
+  <dd>Odgrzeb wszystkie procedury, zmienne i listy właściwości.
+
+  <dt><code>pochowanyp <var>lista_zawartości</var></code>
+  <dt><code>pochowany? <var>lista_zawartości</var></code>
+  <dd>Zwraca 1 jeżeli nazwa jest procedurą użytkowniką, zmienną lub listą pochowaną, 0 w przeciwnym razie.
+</dl>
+
+<h3 id="sec8">8. Struktury kontrolne</h3>
+<h4>8.1 Kontrola</h4>
+<dl>
+  <dt><code>zapuść [ <var>wyrażenia ...</var> ]</code>
+  <dd>Uruchamia raz określone polecenia.
+  <dd class=example>zapuść [ np 100 pw 90 ]</dd>
+
+  <dt><code>zapuśćraportuj [ <var>wyrażenia ...</var> ]</code>
+  <dd>Uruchamia raz określone polecenia.  Jeżeli polecenia zwracają wartość, rezultatem jest lista z pojedynczą wartością, inaczej zwraca pustą wartość. 
+
+  <dt><code>powtórz <var>wyr</var> [ <var>wyrażenia ...</var> ]</code>
+  <dd>Powtarza polecenia <var>wyr</var> zadaną ilość razy.
+  <dd class=example>powtórz 4 [ np 100 pw 90 ]</dd>
+
+  <dt><code>pętla [ <var>wyrażenia ...</var> ]</code>
+  <dd>Powtarza polecenia w nieskończoność. Użytkownik może przerwać pętlę przez umieszczenie w poleceniach: <code>wynik</code>, <code>stopmnie</code> lub <code>dość</code>
+  <dd class=example>pętla [ przypisz "n losowa 100  pokaż :n  jeśli :n == 0 [ dość ] ]</dd>
+
+  <dt><code>numpow</code>
+  <dd>Wyświetla bieżącą liczbę interacji w poleceniu <code>powtórz</code> lub <code>pętla</code> 
+  <dd class=example>powtórz 10 [ pokaż numpow ]</dd>
+
+  <dt><code>jeśli <var>wyr</var> [ <var>wyrażenia ...</var> ]</code>
+  <dd>Wykonuje polecenia jeżeli wyrażenie jest prawdą
+  <dd class=example>jeśli 2 > 1 [ pokaż "yep ]</dd>
+
+  <dt><code>jeśliinaczej <var>wyr</var> [ <var>wyrażenia ...</var> ] [ <var>wyrażenia ...</var> ]</code>
+  <dd>Wykonuje pierwszy zestaw poleceń jeżeli wyrażenie jest prawdziwe, inaczej wykonuje drugi zestaw poleceń.
+  <dd class=example>jeśliinaczej 1 > 2 [ pokaż "yep ] [ pokaż "nope ]</dd>
+
+  <dt><code>test <var>wyr</var></code>
+  <dd>Testuje określone wyrażenie, zapisuje wynik w zasięgu lokalnym do użycia, np. przez <code>jeślitak</code> lub <code>jeślinie</code>
+
+  <dt><code>jeślitak [ <var>wyrażenia ...</var>]</code>
+  <dt><code>jeślit [ <var>wyrażenia ...</var>]</code>
+  <dt><code>jeślinie [ <var>wyrażenia ...</var>]</code>
+  <dt><code>jeślin [ <var>wyrażenia ...</var>]</code>
+  <dd>Uruchamia poelcenia jeżeli wynik polecenia <code>test</code> jest prawdą lub fałszem.
+  <dd class=example>test 1 > 2  jeślitak [ pokaż "yep ]  jeślinie [ pokaż "nope ]</dd>
+
+  <dt><code>stopmnie</code>
+  <dd>Zatrzymuje uruchomionej procedury bez wyświetlenia wyniku.
+
+  <dt><code>wynik <var>wyr</var></code>
+  <dt><code>wy <var>wyr</var></code>
+  <dd>Kończy uruchomioną procedurę i wyświetla wynik z określoną wartością
+
+  <dt><code>dość</code>
+  <dd>Zatrzymuje program
+
+  <dt><code>.możewynik <var>wyr</var></code>
+  <dd>Podobny do <code>wynik</code> jeżeli <var>wyr</var> zwraca wartość, w pzeciwnym wypadku robi podobnie <code>stopmnie</code>
+
+  <dt><code>ignoruj <var>wyr</var></code>
+  <dd>Ocenia i ignoruje wyniki wyrażenia
+  <dd class=example>przypisz "q [ 1 2 3 ]  ignoruj zkolejki "q</dd>
+
+  <dt><code>dla <var>lista_kontrolna</var> [ <var>wyrażenia ...</var>]</code>
+  <dd>Typowa pętla <code>dla</code>. <var>lista_kontrolna</var> określa 3-4 człony: lokalną nazwę zmiennej, wartość początkową, wartość limitu i dodatkowo liczbę kroków.
+  <dd class=example>dla [ a 1 10 ] [ pokaż :a ]</dd>
+  <dd class=example>dla [ a 0 20 2 ] [ pokaż :a ]</dd>
+
+  <dt><code>wykonuj.dopóki [ <var>wyrażenia ...</var>] <var>wyr</var></code>
+  <dd>Uruchamia określone polecenia przynajmniej raz, i powtarza dopóki wyrażenie zwraca prawdę.
+  <dd class=example>wykonuj.dopóki [ przypisz "a losowa 10  pokaż :a ] :a < 8</dd>
+
+  <dt><code>dopóki <var>wyr</var> [ <var>wyrażenia ...</var>]</code>
+  <dd>Uruchamia określone polecenia dopóki wyrażenie zwraca prawdę.
+  <dd class=example>dopóki (losowa 2) = 0 [ pokaż "zero ] pokaż "one</dd>
+
+  <dt><code>wykonuj.dopókinie [ <var>wyrażenia ...</var>] <var>wyr</var></code>
+  <dd>Uruchamia określone polecenia przynajmniej raz, i powtarza dopóki wyrażenie jest fałszem.
+  <dd class=example>wykonuj.dopókinie [ przypisz "a losowa 10  pokaż :a ] :a < 8</dd>
+
+  <dt><code>dopókinie <var>wyr</var> [ <var>wyrażenia ...</var>]</code>
+  <dd>Uruchamia określone polecenia dopóki wyrażenie zwraca fałsz.
+  <dd class=example>dopókinie (losowa 2) = 0 [ pokaż "one ] pokaż "zero</dd>
+
+  <dt><code>wybierz <var>wartość</var> [ <var>klauzule...</var>] </code>
+  <dd>Dla każdej klauzuli w porządku:
+Jeżeli klauzula jest postacią <code>[ INACZEJ <var>wyr</var> ]</code> wtedy <var>wyr</var> jest oceniany i zwracany.
+Inaczej, jeżeli klauzula jest postacią <code>[ [ <var>pasujące</var> ] <var>wyr</var> ]</code> i <var>wartość</var> jest na liście <var>pasujące</var> wtedy <var>wyr</var> jest oceniany i zwracany. 
+ <dd class=example>pokaż wybierz :var [ [ ["a] "AAA ] [ ["b] "BBB ] [ else "other ] ]</dd>
+
+  <dt><code>warunki [ <var>klauzule...</var>] </code>
+  <dd>Dla każdej klauzuli w porządku:
+Jeżeli klauzula jest postacią <code>[ INACZEJ <var>wyr</var> ]</code> wtedy <var>wyr</var> jest oceniany i zwracany.
+Inaczej, jeżeli klauzula jest postacią <code>[ [ <var>wyr1</var> ] <var>wyr2</var> ]</code> i <var>wyr1</var> zwraca prawdę, wtedy <var>wyr2</var> jest wykonywany i zwracany.
+ <dd class=example>pokaż warunki [ [ [:var = 1] "one] [ [:var = 2] "two] [ INACZEJ "other ] ]</dd>
+</dl>
+
+<h4>8.2 Iteracje bazowane na szablonie</h4>
+
+<p>To jest wysokopoziomowe wsparcie dla postaci <em>nazwanych procedur</em> szablonu.
+
+<dl>
+  <dt><code>odnieś <var>nazwa_procedury</var> <var>lista</var></code>
+  <dd>Wywołuje <var>nazwa_procedury</var> z pozycjami <var>lista</var> jako wejściami 
+
+  <dt><code>odwołaj <var>nazwa_procedury</var> <var>wejście1</var></code>
+  <dt><code>(odwołaj <var>nazwa_procedury</var> <var>wejście1</var> ...)</code>
+  <dd>Wywołuje <var>nazwa_procedury</var> z określonymi wejściami jako wejściami
+  <dd class=example>odwołaj "pokaż "hello</dd>
+
+  <dt><code>dlakażdego <var>nazwa_procedury</var> <var>lista</var></code>
+  <dd>Wywołuje <var>nazwa_procedury</var> dla każdej pozycji z listy
+  <dd class=example>dlakażdego "pokaż [1 2 3]</dd>
+
+  <dt><code>mapa <var>nazwa_procedury</var> <var>lista</var></code>
+  <dd>Wyświetla listę składającą się z wyniku wywołania <var>nazwa_procedury</var> dla każdej pozycji na liście
+  <dd class=example>oto double :n wynik :n * 2 już  pokaż mapa "double [1 2 3]</dd>
+
+  <dt><code>filtr <var>nazwa_procedury</var> <var>lista</var></code>
+  <dd>Wyświetla listę składającą się z listy wejściowej, gdzie nazwa procedury wywołana na pozycji zwraca prawdę
+  <dd class=example>oto oddp :n wynik biti :n 1 już  pokaż filtr "oddp [ 1 2 3 4 5 ]</dd>
+
+  <dt><code>znajdź <var>nazwa_procedury</var> <var>lista</var></code>
+  <dd>Wyświetla pierwszą pozycję z <var>lista</var> dla każdej wywołanej <var>nazwa_procedury</var> zwracającej prawdę. Jeżeli nie znaleziono, lista jest pusta.
+  <dd class=example>oto oddp :n wynik biti :n 1 już  pokaż znajdź "oddp [ 2 8 4 7 10 9 ]</dd>
+
+  <dt><code>skróć <var>nazwa_procedury</var> <var>lista</var></code>
+  <dt><code>(skróć <var>nazwa_procedury</var> <var>lista</var> <var>początkowy</var>)</code>
+  <dd>Wywołuje <var>nazwa_procedury</var> powtarzalnie z dwoma wejściami - bieżącą wartością i następną pozycją listy. Jeżeli <var>początkowy</var> nie jest określony, używany jest pierwszy element.
+ <dd class=example>pokaż skróć "suma [ 1 2 3 4 5 ]</dd>
+</dl>
+
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  [].forEach.call(document.querySelectorAll('.example'), function(e) {
+    e.title = 'Kliknij, aby wypróbować ten przykład';
+    e.addEventListener('click', function() {
+      if (!window.parent) return;
+      var text = this.textContent || this.innerText;
+      window.parent.postMessage({
+        example: text
+      }, '*');
+    });
+  });
+});
+</script>
+</body>
+</html>

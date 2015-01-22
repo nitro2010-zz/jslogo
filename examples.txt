@@ -1,0 +1,60 @@
+oto gwiazda
+	powtórz 5 [ np 100 pw 144 ]
+już
+cs
+gwiazda
+
+oto square :length
+  powtórz 4 [ np :length pw 90 ]
+już
+cs
+powtórz 36 [ square 50 pw 10 ]
+
+oto square :length
+  powtórz 4 [ np :length pw 90 ]
+już
+cs
+powtórz 36 [ square 50 pw 10 ]
+oto kolormieszany
+  ustalkolor los [ red orange yellow green blue violet ]
+już
+cs
+powtórz 36 [ kolormieszany square losowa 200 pw 10 ]
+
+cs okno
+powtórz 144 [
+  ustalwysokośćtekstu numpow
+  podnieś
+  np numpow * numpow / 30
+  wpisztekst "Logo
+  ws numpow * numpow / 30
+  opuść
+  pw 10
+]
+
+oto drzewo :rozmiar
+   jeśli :rozmiar < 5 [np :rozmiar ws :rozmiar stopmnie]
+   np :rozmiar/3
+   lw 30 drzewo :rozmiar*2/3 pw 30
+   np :rozmiar/6
+   pw 25 drzewo :rozmiar/2 lw 25
+   np :rozmiar/3
+   pw 25 drzewo :rozmiar/2 lw 25
+   np :rozmiar/6
+   ws :rozmiar
+już
+cs
+ws 150
+drzewo 250
+
+oto fern :size :sign
+  jeśli :size < 1 [ stopmnie ]
+  np :size
+  pw 70 * :sign fern :size * 0.5 :sign * -1 lw 70 * :sign
+  np :size
+  lw 70 * :sign fern :size * 0.5 :sign pw 70 * :sign
+  pw 7 * :sign fern :size - 1 :sign lw 7 * :sign
+  ws :size * 2
+już
+okno cs pod ws 150 opu
+fern 25 1

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<title>Logo Testy jednostkowe</title>
+
+<!--[if lt IE 9]><script type="text/javascript" src="../polyfill/flashcanvas.js"></script><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="../polyfill/polyfill.js"></script><![endif]-->
+
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.12.0.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css" type="text/css" media="screen" />
+
+<h1 id="qunit-header">Logo Testy jednostkowe</h1>
+<h2 id="qunit-banner"></h2>
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+<div id="qunit-fixture">test znacznika, powinnien być ukryty</div>
+
+<!-- flashcanvas doesn't like this being inside fixture -->
+<div id="my-fixture" style="display: none">
+<div id="display" style="width: 200px; height: 200px; position: relative;">
+    <canvas id="sandbox" width="300" height="300" style="position: absolute; border: solid 1px black; z-index: 0;">
+        <span style="color: red; background-color: yellow; font-weight: bold;">Twoja przeglądarka nie obsługuje elementu canvas - przepraszamy!</span>
+    </canvas>
+    <canvas id="turtle" width="760" height="350" style="position: absolute; border: solid 1px black; z-index: 1;"></canvas>
+    <div id="overlay" style="width: 280px; height: 280px; padding: 10px; margin: 0; position: absolute; z-index: 2; background-color: transparent; overflow: hidden; white-space: pre-wrap; font-family: Monospace;"></div>
+</div>
+<div id="output"></div>
+</div>
+
+<script type="text/javascript" src="logo.js"></script> <!-- Logo interpreter -->
+<script type="text/javascript" src="turtle.js"></script> <!-- Canvas turtle -->
+<script type="text/javascript" src="tests.js"></script> <!-- Unit tests -->
+

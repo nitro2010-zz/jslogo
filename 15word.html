@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<title>Wyzwanie 15 słów w LOGO</title>
+<h1>Wyzwanie 15 słów w LOGO</h1>
+<p>Oryginalna strona: <a href="http://www.mathcats.com/gallery/15wordcontest.html">Wyzwanie 15 słów w LOGO, zadane przez Keith Envoldsena</a>
+
+<script>
+
+var programs = [
+
+//    Five Rose or Starfish, by , Italy (and , Australia) - only 8 words!!
+
+'powtórz 1800 [np 10 pw numpow + .1]',
+//                        Dahlia, by , U.S. (14 words)
+'powtórz 8 [pw 45 powtórz 6 [powtórz 90 [np 2 pw 2] pw 90]]',
+//                 Layers, by Alessio Plebe, Italy (15 words)
+'dla [i 0 420] [skieruj :i powtórz :i [np 2 pw 1] pod wróć opu]',
+//     Lissajous variations, by Samuel Kilchenmann, Switzerland (15 words)
+'powtórz 360 [nowexy (sin(2 * numpow)) * 150 (sin(3 * numpow)) * 150]',
+'powtórz 360 [nowexy (sin(89 * numpow)) * 150 (sin(179 * numpow)) * 150]',
+'powtórz 360 [nowexy (sin(254 * numpow)) * 150 (sin(201 * numpow)) * 150]',
+'powtórz 360 [nowexy (sin(327 * numpow)) * 150 (sin(66 * numpow)) * 150]',
+
+//     Pencil Sketch, by Andrzej Baczynski (shopwened by Yehuda Katz), 15
+//                                    words
+'powtórz 5000 [zapuść lista element suma 1 losowa 4 [np ws pw lw] losowa 10]',
+
+//              Penta-octagon, by M.H. Elhefni, Egypt (15 words)
+'dla [l 10 80 5] [powtórz 5 [powtórz 8 [np :l pw 45] pw 72]]',
+//        Circus (Ring variation 2), by Olga Tuzova, Russia (14 words)
+//'px setpensize [100 100] powtórz 1000 [powtórz 72 [np 20 pw 10] pw 90]', // Sketchy even in async
+//                   Radar, by Zippi Katz, Israel (11 words)
+'odwr powtórz 1000000 [np 40 np 40 ws 80 pw 1]',
+//               Square Spiral, by Yehuda Katz, Israel (9 words)
+'odwr dla [x 1 1000000] [np :x pw 90]',
+//                               Slalom Scrolls
+'dla [i 0 2000] [np 5 pw (90 * sin :i)]',
+//                                 Hairy Star
+'pod nowex -200 opu dla [i 0 4700] [np 10 pw (180 * sin (:i * :i))]',
+//                                 Jaggy Star
+'pod nowey -220 opu dla [i 0 2200] [np (25 * sin :i) pw (:i * :i)]',
+//                                  Bullring (Ian Stewapw)
+'dla [i 0 1002] [np 8 skieruj (360 * (potęga :i 3) / 1002)]',
+//                      losowa Lines, by , U.S. (9 words)
+'powtórz losowa 1000 [np losowa 1000 pw losowa 360]',
+//       Square Spiral variation 1, by Keith Enevoldsen, U.S. (9 words)
+'odwr dla[x 1 1000000] [np :x pw 89.99]',
+//      Square Spiral variation 2, by Bill Kerr, Australia (14 words or 8                                   words)
+'przypisz "x 1 powtórz 150 [np :x pw 89 przypisz "x :x + 1] dla [x 1 150] [np :x pw 89]',
+//                Sine Wave, by Shachar Katz, Israel (15 words)
+
+'nowey 1000 wróć nowex 1000 dla [x -180 180] [nowexy :x 70 * sin :x]',
+
+//  Radar variation 1, by Bill Kerr, Australia (12 words)
+'powtórz 3600 [odwr np 80 np 0 ws 80 lw losowa 360]',
+
+// Radar variation 2, by Keith Enevoldsen, U.S. (7 words)
+'odwr powtórz 10000 [np 200 pw 179]',
+
+//    Brownian Motion, by Erez Katz, Israel (14 words)
+'powtórz 10000 [np 3 * (-1 + losowa 2) pw 90 * losowa 4]',
+
+//   Feathers, by , U.S. (13 words)
+'powtórz 12 [powtórz losowa 50 [np 100 ws 95 pw 2] pw 180]',
+
+//    Feathers variation 1, by Keith Enevoldsen, U.S. (13 words)
+'powtórz 50 [powtórz losowa 100 [np 300 ws 295 pw 2] pw 180]',
+
+//   Spiral, by Olga Tuzova, Russia (11 words)
+'dla [i 0.01 4 0.05] [powtórz 180 [np :i pw 1]]',
+
+//    Ring, by Olga Tuzova, Russia (10 words)
+'odwr ustalrozmiarpisaka [20 20] powtórz 100000 [np 2 pw 2]',
+
+// Ring variation 1, by Keith Enevoldsen, U.S. (10 words)
+'odwr ustalrozmiarpisaka [200 200] powtórz 36 [np 20 pw 10]',
+
+//   Cubism (Ring variation 3), by Yehuda Katz, Israel (15 words)
+//'odwr dla [x 10 200] [ustalrozmiarpisaka zd :x :x powtórz 36 [np 20 pw 15]]', // Sketchy even async
+
+
+// Inky Dots, by Olga Tuzova, Russia (14 words)
+'ustalrozmiarpisaka [10 10] powtórz 10000 [pod np 15 opu np 0 pw losowa 360]', // opu np 0 doesn't draw anything
+
+// Inky Dots variation 1, by Yehuda Katz, Israel (15 words)
+'odwr ustalrozmiarpisaka [10 10] powtórz 10000 [pod np 15 opu np 00 pw losowa 360]', // opu np 0 doesn't draw anything
+
+// Rose, by M.H. Elhefni, Egypt (shopwened by Yehuda Katz, Israel, 13 words)
+'dla [t 0 180 3] [skieruj :t np 200 * sin :t wróć]',
+
+// Rose variation 1, by Keith Enevoldsen, U.S. (14 words)
+'dla [t 0 180] [skieruj :t np 200 * sin :t*7 wróć]',
+
+//   Rose variation 2, by M.H. Elhefni, Egypt (13 words)
+'powtórz 9 [dla [i 10 200 10] [np :i ws :i pw 2]]',
+
+// Lissajous, by M.H. Elhefni, Egypt (15 words)
+'dla [t 0 360] [nowexy 200 * sin :t 200 * cos :t * 5]',
+
+// Hypercube, by Frank Caggiano, U.S. (12 words)
+'powtórz 8 [powtórz 4 [pw 90 np 100] ws 100 lw 45]',
+
+// Scribble, by Keith Enevoldsen, U.S. (15 words)
+'powtórz 1000 [np 3 pw losowa int 20 * (1 + sin (10 * numpow))]',
+
+//    Fan Flower, by Keith Enevoldsen, U.S. (12 words)
+'powtórz 12 [powtórz 75 [np 100 ws 100 pw 2] np 250]',
+
+//   Current, by George Mills, U.S. (10 words)
+'powtórz 5100 [np 10 pw arctg (reszta numpow 100) / 100]',
+
+//   Elliptical Spiral, by George Mills, U.S. (15 words)
+'powtórz 3600 [nowexy numpow / 10 * sin numpow numpow/20 * cos numpow]',
+
+// Cloudy Night, by George Mills, U.S. (8 words)
+'powtórz 6000 [np numpow pw reszta numpow 360]',
+
+//   Simple Flower, by , Australia (13 words)
+'powtórz 11 [dla [i 0 359] [np 1 pw (sin :i / 2)]]',
+
+//   Seconds, by Zippi Katz, Israel (15 words)
+//'odwr pż ustalrozmiarpisaka [5 5] powtórz 1000 [np 100 czekaj 40 ws 100 pw 6]',
+
+//    Face, by Yehuda Katz, Israel (15 words)
+'pod pw 30 powtórz 12 [np 110 opu wpisztekst numpow pod ws 110 pw 30]',
+
+//   Self-Replicating, by Brian Harvey, U.S. (13 words)
+//'invoke [[x] print (list "invoke :x :x)] [[x] print (list "invoke :x :x)]', // ????
+
+//   Basic Spinning Wheel variations 1-3, by Greg Simkins' 6th grade class, U.S. (15 words)
+//'define "spin [[ ][powtórz 15 [np 100 ws 100 pw 5]]] powtórz 25 [spin np 100]', // Don't now how to DEFINE
+//'define "spin [[ ][powtórz 15 [np 100 ws 95 pw 10]]] powtórz 12 [spin np 100]', // Don't now how to DEFINE
+//'pod ustalpoz [-400 0] opu  define "spin [[ ][powtórz 25 [np 100 ws 100 pw 15]]] powtórz 24 [spin np 100]', // Don't know how to DEFINE
+
+//    Basic Spinning Wheel variations 1-3, shopwened by Yehuda Katz, Israel  (12 words)
+'powtórz 25 [powtórz 15 [np 100 ws 100 pw 5] np 100]',
+'powtórz 12 [powtórz 15 [np 100 ws 95 pw 10] np 100]',
+'powtórz 24 [powtórz 25 [np 100 ws 100 pw 15] np 100]',
+
+//    Low, by Alessio Plebe, Italy (15 words)
+'pod nowex -100 opu dla [i 0 32] [powtórz :i [np :i pw 358 / :i] ws pwk :i]',
+
+//    Sun, by Alessio Plebe, Italy (13 words)
+'powtórz 2000 [pod wróć skieruj losowa 361 np 40 opu np losowa 200]',
+
+//  Hexagon, by M.H. Elhefni, Egypt (15 words)
+'dla [i 100 30 -50] [powtórz 6 [powtórz 6 [np :i lw 60] lw 60]]',
+
+// Hexagon variation 1, by Yehuda Katz, Israel (15 words)
+'dla [size 20 80 20] [powtórz 6 [powtórz 6 [np :size pw 60] pw 60]]',
+
+// Hexagon variation 2, by M.H. Elhefni, Egypt (15 words)
+'dla [i 100 10 -5] [powtórz 6 [powtórz 6 [np :i lw 60] lw 60]]',
+
+//    Pentahexagon, by M.H. Elhefni, Egypt (shopwened by Keith Enevoldsen, U.S.) (10 words)
+'powtórz 5 [powtórz 6 [np 100 lw 72] lw 144]',
+
+//    Pentahexagon variation 1, by M.H. Elhefni, Egypt (15 words)
+'dla [i 100 10 -5] [powtórz 5 [powtórz 6 [np :i lw 72] lw 144]]',
+
+//  Pentagon, by M.H. Elhefni, Egypt (15 words)
+'dla [i 100 10 -10] [powtórz 5 [powtórz 5 [np :i lw 72] lw 72]]',
+
+//    Moire, by Yehuda Katz, Israel (9 words)
+'okno powtórz 180 [np 500 ws 500 pw 2]',
+
+// Fireworks, by M.H. Elhefni, Egypt (14 words)
+// 'dla [i 0 220 0.0001*sin :i] [np :i ws :i pw 10]', // Not sure what this is doing
+
+//Pelwonwheel, by M.H. Elhefni, Egypt (14 words)
+// 'dla [i 0 220 sin :i/1000] [np :i ws :i pw 51]', // Not sure what this is doing
+
+//  Spirals, by M.H. Elhefni, Egypt (14 words)
+// 'dla [i 0 220 sin :i/1000] [np :i ws :i pw 41]', // Not sure what this is doing
+
+//Gillyflower, by Alessio Plebe, Italy (15 words)
+'powtórz 450 [przypisz "a 73 * sin numpow np :a pw 88 * cos :a]',
+
+// Growing Scrolls variation 1, by Keith Enevoldsen, U.S. (12 words)
+'dla [i -1 4] [powtórz 720 [np potęga 2 :i pw numpow]]',
+
+// Growing Scrolls variation 2, by Keith Enevoldsen, U.S. (14 words)
+'dla [i -1 15] [powtórz 720 [np potęga 1.2 :i pw numpow] lw 45]',
+
+//  Growing Scrolls variation 3, by M.H. Elhefni, Egypt (11 words)
+'dla [i 1 14 6] [powtórz 720 [np :i pw numpow]]',
+
+//  Growing Scrolls variation 4, by M.H. Elhefni, Egypt (13 words)
+'dla [i 1 18 2] [powtórz 720 [np :i pw numpow] lw 45]',
+
+//Mountains, by Keith Enevoldsen, U.S. (12 words)
+//'powtórz 2000 [nowexy (numpow * 2) (pozy - 2 + losowa 5)]', // TODO: expression detection in parser?
+'powtórz 2000 [nowexy (0 + numpow * 2) (0 + pozy - 2 + losowa 5)]',
+
+//  Head, by Keith Enevoldsen, U.S. (15 words)
+'powtórz 38 [np 5 pw 10] nowex 55 nowex 27 nowexy 20 -10 nowex 27',
+
+//Eye, by , Italy (12 words)
+'powtórz 1800 [np ln numpow ws 10*sin numpow pw 10]',
+
+//   Growing, by , Italy (13 words)
+'powtórz 360 [powtórz numpow [powtórz numpow [np numpow lw 15] wróć] lw 1]',
+
+// Don Quixote, by , Italy (14 words)
+'odwr powtórz 360 [powtórz numpow [powtórz numpow [np numpow lw 15] wróć] lw 1]',
+
+//   Ellipse, by , Italy (14 words)
+'powtórz 360 [pw numpow np 1 lw numpow * 2 np 0.5 pw numpow]',
+
+// Polygon variations 1-3, by , Italy (14 words)
+'powtórz 4 [powtórz 30 [lw 90 np 4 pw 90 np 4] pw 90]',
+'powtórz 4 [powtórz 20 [lw 160 np 20 pw 160 np 20] pw 90]',
+'powtórz 8 [powtórz 20 [lw 170 np 20 pw 170 np 20] pw 45]',
+
+//   Rotating Circle, by M.H. Elhefni, Egypt (11 words)
+'odwr powtórz 4000 [powtórz 34 [np 12 pw 10] pw 90]',
+
+//Disappearing Triangles, by Olga Tuzova, Russia (14 words)
+'odwr powtórz 360 [nowex 200 * (cos numpow) nowey pozx * (cos numpow) wróć]',
+
+//Smiling Fish, by Yehuda Katz, Israel (15 words)
+'pod nowex -157 opu  dla [t -315 315] [nowexy :t * sin :t :t * cos 2 * :t]',
+
+//Bird's Wings, by Olga Tuzova, Russia (15 words)
+'powtórz 360 [nowex 200 * (sin numpow) nowey pozx * (cos 2 * numpow) wróć]',
+
+// Butterfly, by Olga Tuzova, Russia (15 words)
+'powtórz 360 [nowex 200 * (sin 2 * numpow) nowey pozx * (cos numpow) wróć]',
+
+//    Fish, by Olga Tuzova, Russia (15 words)
+'powtórz 360 [nowex 200 * (cos 2 * numpow) nowey pozx * (cos numpow) wróć]',
+
+//   Block, by de Walw Smith, U.S. (12 words)
+'powtórz 25726 [ustalpoz zd (50 - losowa 100) (50 - losowa 100)]',
+
+//   Octa-star Spiral, by M.H. Elhefni, Egypt (15 words)
+'dla [l 0 120 4] [powtórz 8 [np :l pw 135] np :l pw 30]',
+
+// Penta-star Spiral, 15W, M.H. Elhefni, Egypt (15 words)
+'dla [l 0 95 3] [powtórz 5 [np :l pw 144] np :l pw 30]',
+
+//    Designs 1-5, by Alex Mylonas' class, Greece (12 - 14 words)
+'powtórz 36 [np 60 pw 61 ws 80 lw 41 np 85 pw 41]',
+'powtórz 16 [np 85 lw 60 np 107 ws 72 lw 53 np 74]',
+'powtórz 100 [np 5 + numpow pw 45 np 10 + numpow pw 60]',
+
+'powtórz 36 [powtórz 36 [np 10 pw 10] np numpow pw 90 np numpow]',
+
+'powtórz 18 [powtórz 5 [pw 40 np 100 pw 120] pw 20]'
+
+];
+
+function escapeHtml(string) {
+  return String(string).replace(/&/g, '&amp;').replace(/</g, '&lw;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+document.write('<ul>')
+while(programs.length) {
+  var program = programs.shift();
+  document.write('<li><a href="async.htm?' + encodeURIComponent(program) + '">' + escapeHtml(program) + '</a>');
+}
+document.write('</ul>')
+
+</script>
